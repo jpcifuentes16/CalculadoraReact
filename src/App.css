@@ -1,0 +1,19 @@
+.teclado{
+	display: grid;
+	grid-template-columns: auto auto auto auto;
+	padding: 10px;
+	grid-gap: 10px;
+	justify-content: center;
+}
+
+.App{
+	align-content: center;
+	width: 325px;
+    height: auto;
+    margin: 100px auto;
+    padding: 20px 20px 9px;
+    position: relative;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+}
