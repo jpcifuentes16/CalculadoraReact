@@ -15,7 +15,9 @@ class App extends Component
         teclado:['7','8','9','+','4','5','6','-','1','2','3','/','0','.','=','x'],
         numeroMemoria:0,
         numerosEnPantalla:'0',
-        operador:''
+        operador:'',
+        nuevoNumero:false,
+        operacionEnCola:false
       }
 
       this.botonesEspeciales=['+','-','/','x']
@@ -109,16 +111,40 @@ class App extends Component
           );
     }
 
+    resetBanderaNuevoNumero()
+    {
+      this.setState(
+            {
+              nuevoNumero:false
+            }
+          );
+
+    }
+
+
     preionarBoton(numeroNuevo)
     {
+      if(this.state.operacionEnCola)
+      {
+        this.setState(
+            {
+              numeroMemoria: this.state.numerosEnPantalla,
+              operacionEnCola:false
+            })
+      }
       let pantallaNueva;
-      if((this.state.numerosEnPantalla==='0' || this.state.numerosEnPantalla==='ERROR') && numeroNuevo!='.')
+      if((this.state.numerosEnPantalla==='0' || this.state.numerosEnPantalla==='ERROR'||this.state.nuevoNumero) && numeroNuevo!='.')
       {
         pantallaNueva=numeroNuevo;
       }
       else
       {
         pantallaNueva=this.state.numerosEnPantalla+numeroNuevo;
+      }
+
+      if(this.state.nuevoNumero)
+      {
+        this.resetBanderaNuevoNumero()
       }
       
 
@@ -127,16 +153,49 @@ class App extends Component
         const numeroMemoriaEntrante= this.state.numerosEnPantalla
         this.setState(
             {
-              numerosEnPantalla:'0',
               operador:numeroNuevo,
-              numeroMemoria: numeroMemoriaEntrante
+              numeroMemoria: numeroMemoriaEntrante,
+              nuevoNumero:true
             }
           );
+        if(this.state.operador!='')
+        {
+            if(this.state.operador==='+')
+            {
+              this.suma()
+            }
+            else if(this.state.operador==='x')
+            {
+              this.mul()
+            }
+            else if(this.state.operador==='-')
+            {
+              this.resta()
+            }
+            else if(this.state.operador==='/')
+            {
+              this.division()
+            }
+            this.setState(
+            {
+              operador:numeroNuevo,
+              operacionEnCola:true
+              //numeroMemoria:this.state.numerosEnPantalla
+            }
+            );
+
+            return 0
+        }
         return 0
       }
 
       if(numeroNuevo==='=')
       {
+         this.setState(
+            {
+              operador:''
+            }
+          );
         if(this.state.operador==='+')
         {
           this.suma()
